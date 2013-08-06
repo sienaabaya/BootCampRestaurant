@@ -10,9 +10,10 @@ public class MeanMedianMode {
      * @param args
      */
     List<String> modeList = new ArrayList<String>();
-
+    ArrayList<Integer> list = new ArrayList<Integer>();
 
     public void findMeanMedianMode(String args[]) {
+        sortList(args);
         getMean(args);
         getMedian(args);
         getMode(args);
@@ -31,10 +32,10 @@ public class MeanMedianMode {
     }
 
     public void getMedian(String[] args){
-        double length = args.length+1;
+        double length = list.size()+1;
         double middle= length/2;
         int middleNum = (int) middle;
-        double median = (Double.parseDouble(args[middleNum])+Double.parseDouble(args[middleNum-1]))/2;
+        double median = (Double.parseDouble(list.get(middleNum).toString())+Double.parseDouble(list.get(middleNum-1).toString()))/2;
         if(length%2 == 0.0){
             System.out.print("Median: "+ middle+ " ");
         }else{
@@ -43,31 +44,37 @@ public class MeanMedianMode {
     }
 
     public void getMode(String[] args){
-        Arrays.sort(args);
         int counter = 0;
         int maxCounter = 0;
-
         System.out.print("Mode: ");
-        for(int i=1; i<args.length; i++){
-            if(args[i].equals(args[i-1])){
-                counter++;
-                if(counter >= maxCounter){
-                    maxCounter = counter;
-                    modeList.add(args[i]);
+            for(int i=1; i<list.size(); i++){
+                if(list.get(i).equals(list.get(i-1))){
+                    counter++;
+                    if(counter >= maxCounter){
+                        maxCounter = counter;
+                        modeList.add(list.get(i).toString());
+                    }
+                }else{
+                    counter=0;
                 }
-
-            } else{
-                counter=0;
             }
+            if (maxCounter==0){
+                for(int i=0; i<args.length; i++){
+                System.out.print(args[i]+" ");
+                }
+            }
+            Set<String> uniqueMode = new HashSet<String>(modeList);
+            Iterator iterate = uniqueMode.iterator();
+            while(iterate.hasNext()){
+            System.out.print(iterate.next()+" ");
+            }
+    }
+
+    public void sortList(String[] args){
+        for (int i=0; i<args.length;i++){
+            list.add(Integer.parseInt(args[i]));
         }
-
-        Set<String> uniqueMode = new HashSet<String>(modeList);
-        Iterator iterate = uniqueMode.iterator();
-        while(iterate.hasNext()){
-        System.out.print(iterate.next()+" ");
-
-        }
-
+        Collections.sort(list);
     }
 
 }
